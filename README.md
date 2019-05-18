@@ -5,8 +5,44 @@ For the original project please refer to:
 https://github.com/thunlp/OpenKE
 
 ## Index
+- [OpenKE](#openke)
+  * [Index](#index)
+  * [Overview](#overview)
+  * [Repository structure](#repository-structure)
+  * [Installation](#installation)
+    + [General installation](#general-installation)
+    + [Install on Google Colab](#install-on-google-colab)
+  * [How to train?](#how-to-train-)
+    + [Input](#input)
+    + [Training](#training)
+      - [Step 1](#step-1)
+      - [Step 2](#step-2)
+      - [Step 3](#step-3)
+      - [Step 4](#step-4)
+      - [Step 5](#step-5)
+    + [Output](#output)
+    + [Training on Google Colab](#training-on-google-colab)
+  * [How to use the model?](#how-to-use-the-model-)
+    + [Link Prediction](#link-prediction)
+    + [Triple classification](#triple-classification)
+    + [Usage example](#usage-example)
+    + [Predict head entity](#predict-head-entity)
+    + [Predict tail entity](#predict-tail-entity)
+    + [Predict relation](#predict-relation)
+    + [Classify a triple](#classify-a-triple)
+  * [How to test the model?](#how-to-test-the-model-)
+      - [Input](#input-1)
+      - [Link Prediction Evaluation](#link-prediction-evaluation)
+      - [Triple Classification Evaluation](#triple-classification-evaluation)
+      - [Evaluation Example](#evaluation-example)
+      - [Output](#output-1)
+      - [Testing on Google Colab](#testing-on-google-colab)
+  * [API](#api)
+    + [Config](#config)
+    + [Model](#model)
 
-[TOC]
+Table of contents generated with markdown-toc: http://ecotrust-canada.github.io/markdown-toc/
+
 
 ## Overview
 
@@ -70,7 +106,7 @@ drive.mount('/content/gdrive')
 
 ## How to train?
 
-###Input
+### Input
 For training, datasets must contain three files:
 
   1. train2id.txt: training file, the first line is the number of triples for training. Then the following lines are all in the format ***(head, tail, rel)*** which indicates there is a relation ***rel*** between ***head*** and ***tail*** .
@@ -191,12 +227,12 @@ with open(path+"TIME.txt", "a+") as f:
     f.write("Number of seconds elapsed for training: " + str(elapsed_time) + "\n")
 ```
 
-###Output
+### Output
 The training output of this phase consists of:
 * emebedding files stored in the **/res** directory;
 * training time which is stored in the file **TIME.txt** which will be created in the dataset directory.
 
-###Training on Google Colab
+### Training on Google Colab
 To train your model on Google Colab and store the results in your Google Drive use these commands:
 ```bash
 !python OpenKE/example_train_transe.py
@@ -205,16 +241,16 @@ To train your model on Google Colab and store the results in your Google Drive u
 
 
 
-##How to use the model?
-There are two tasks already implemented in the repository, which can be used once the embeddings have been learned:** Link prediction **and **Triple classification**.
+## How to use the model?
+There are two tasks already implemented in the repository, which can be used once the embeddings have been learned: **Link prediction** and **Triple classification**.
 
-###Link Prediction
+### Link Prediction
 Link prediction aims to predict the missing h (predict_head_entity), t (predict_tail_entity) or r (predict_relation) for a relation fact triple (h,r,t). In this task, for each position of missing entity, the system is asked to rank a set of  k (additional parameter of the methods) candidate entities from the knowledge graph, instead of only giving one best result. Given a specific test triple (h,r,t) from which to predict the missing head/tail/relation, the head/tail/relation is replaced by all entities/relations in the knowledge graph, and these triples are ranked in descending order of similarity scores (calculated by their dissimilarity). Prediction can be performed respect to head/tail/relation by using the corresponding methods to get the top k predictions from the ranked list.
 
-###Triple classification
+### Triple classification
 Triple classification aims to judge whether a given triple (h,r,t) is correct or not (a binary classification task). For triple classification, is used a threshold δ: for a given triple, if the dissimilarity score (given by the model score function) obtained by the triple is below δ, the triple will be classified as positive, otherwise as negative. The threshold can be passed as a parameter to the method predict_triple, or can be optimized by maximizing classification accuracies on the validation set (contained in *valid2id.txt*,  stored in the dataset directory).
 
-###Usage example
+### Usage example
 To use a knowledge graph embedding model (already learned) first import the embeddings and then use methods for link prediction and triple classification. For instance, the file example_usage_transe.py contains the script to load a model and use it:
 
 ```python
@@ -239,23 +275,23 @@ con.predict_relation(0, 1928, 5)
 con.predict_triple(0, 1928, 1)
 ```
 
-###Predict head entity
+### Predict head entity
 Given tail entity and relation, predict the top k possible head entities. All the objects are represented by their id. The method to use is *predict_head_entity(t, r, k)*  which predicts the top k head entities given the tail entity (*t*) and the relation (*r*).
 ```python
 con.predict_head_entity(1928, 1, 5)
 ```
-###Predict tail entity
+### Predict tail entity
 This is similar to predicting the head entity. The method to use is *predict_tail_entity(h, r, k)* which predicts the top k tail entities given the head entity (*h*) and the relation (*r*).
 ```python
 con.predict_tail_entity(0, 1, 5)
 ```
-###Predict relation
+### Predict relation
 Given the head entity and tail entity, predict the top k possible relations. All the objects are represented by their id. The method to use is *predict_relation(h, t, k)* which predicts the relation id given head entity and tail entity.
 ```python
 con.predict_relation(0, 1928, 5)
 ```
 
-###Classify a triple
+### Classify a triple
 Given a triple (h, r, t), this funtion tells us whether the triple is correct or not. If the threshold is not given, this function calculates the threshold for the relation from the valid dataset (in this case stored in *OpenKE/benchmarks/lastfm/valid2id.txt*). The method to use is *predict_triple(h, t, r, thresh = None)*.
 ```python
 con.predict_triple(0, 1928, 1)
@@ -263,7 +299,7 @@ con.predict_triple(0, 1928, 1)
 
 ## How to test the model?
 
-####Input
+#### Input
 * For testing, datasets directory must contain additional two files (totally five files with the training files):
 
   1. test2id.txt: testing file, the first line is the number of triples for testing. Then the following lines are all in the format ***(head, tail, rel)*** .
@@ -334,7 +370,7 @@ with open(path+"TIME_evaluation.txt", "a+") as f:
 ```
 #### Output
 The output of evaluation consists in the following files which are stored in the datset directory:
-* ** test_neg.txt:**: generated from triple classification task; since this task needs negative labels, each golden test triplet (marked with +1 in the 4th column) is corrupted to get only one negative triplet (marked with -1 in the 4th column). The resulting set of triplets are stored in this file (which contains twice the number of test triplets of course). This file contains the "ground truth"
+* **test_neg.txt:**: generated from triple classification task; since this task needs negative labels, each golden test triplet (marked with +1 in the 4th column) is corrupted to get only one negative triplet (marked with -1 in the 4th column). The resulting set of triplets are stored in this file (which contains twice the number of test triplets of course). This file contains the "ground truth"
 * **valid_neg.txt**: generated from triple classification task; the logic is the same of the previous file; this file contains twice the number of the validation triple (for each validation triple is generated a corrupted triple);
 * **TIME.txt**: contains the time to perform evaluation;
 * **test_CLASSIFICATION.txt**: generated from triple classification task; this file contains the same triples contained in the file **test_neg.txt** but stored with a different logic. Each triple is marked (in the 4th column) with +1 if the model learned classify it as correct, -1 otherwise. You can use this file in combination with **test_neg.txt** to compute True positive, True negative, etc.
