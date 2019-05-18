@@ -259,7 +259,7 @@ import models
 
 '''step 1: Load the dataset and embedding files'''
 con = config.Config()
-con.set_in_path("OpenKE/benchmarks/lastfm_OK/")
+con.set_in_path("OpenKE/benchmarks/lastfm/")
 con.set_import_files("OpenKE/res/model.vec.tf")    
 con.set_work_threads(8)
 con.set_dimension(64)
@@ -347,7 +347,7 @@ import time
 
 '''step 1: init operations'''
 start_time = time.time()
-path = "OpenKE/benchmarks/lastfm_OK/"
+path = "OpenKE/benchmarks/lastfm/"
 con = config.Config()
 con.set_in_path(path)
 con.set_import_files("OpenKE/res/model.vec.tf")

@@ -4,10 +4,10 @@ import time
 
 '''step 1: init operations'''
 start_time = time.time()
-path = "OpenKE-master/benchmarks/lastfm_OK/"
+path = "OpenKE/benchmarks/lastfm/"
 con = config.Config()
 con.set_in_path(path)
-con.set_import_files("OpenKE-master/res/model.vec.tf")
+con.set_import_files("OpenKE/res/model.vec.tf")
 
 '''step 2: specify the evaluation task to perform (link prediction and/or triple classification)'''
 con.set_test_link_prediction(True)

@@ -5,7 +5,7 @@ import time
 '''step 1'''
 con = config.Config()
 start_time = time.time()
-path = "OpenKE-master/benchmarks/lastfm/"
+path = "OpenKE/benchmarks/lastfm/"
 con.set_in_path(path)
 
 '''step 2'''
@@ -21,8 +21,8 @@ con.set_train_times(1000)
 con.set_opt_method("SGD")
 
 '''step 3'''
-con.set_export_files("OpenKE-master/res/model.vec.tf")
-con.set_out_files("OpenKE-master/res/embedding.vec.json")
+con.set_export_files("OpenKE/res/model.vec.tf")
+con.set_out_files("OpenKE/res/embedding.vec.json")
 
 '''step 4'''
 con.init()

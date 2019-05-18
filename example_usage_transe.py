@@ -3,8 +3,8 @@ import models
 
 '''step 1: Load the dataset and embedding files'''
 con = config.Config()
-con.set_in_path("OpenKE-master/benchmarks/lastfm_OK/")
-con.set_import_files("OpenKE-master/res/model.vec.tf")    
+con.set_in_path("OpenKE/benchmarks/lastfm/")
+con.set_import_files("OpenKE/res/model.vec.tf")    
 con.set_work_threads(8)
 con.set_dimension(64)
 
