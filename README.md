@@ -74,7 +74,7 @@ The repository contains the following folders:
 2. Clone the OpenKE repository:
 
 ```bash
-$ git clone https://github.com/thunlp/OpenKE			//for the original repo
+$ git clone https://github.com/thunlp/OpenKE	//for the original repo
 $ git clone https://github.com/swapUniba/OpenKE	//for the updated repo
 $ cd OpenKE
 ```
@@ -88,7 +88,7 @@ $ bash make.sh
 ### Install on Google Colab
 
 1. Connect Google Drive to store results (optional)
-```bash
+```python
 from google.colab import drive
 drive.mount('/content/gdrive')
 ```
